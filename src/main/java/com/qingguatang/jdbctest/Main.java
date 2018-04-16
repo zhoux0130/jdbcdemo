@@ -9,7 +9,9 @@ package com.qingguatang.jdbctest;
  */
 public class Main {
 
-  public static void main(String[] args){
+  public static void main(String[] args) throws ClassNotFoundException {
+
+    try {
       // 1. 加载一个mysql的驱动，这里封装了对mysql数据库操作的具体实现
 
       // 2. 配置mysql数据库的访问地址，以及用户名及密码
@@ -21,6 +23,12 @@ public class Main {
       // 5. 执行SQL，并且封装了DB中的返回
 
       // 6. 关闭创建的客户端与DB的连接
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+
 
   }
 
