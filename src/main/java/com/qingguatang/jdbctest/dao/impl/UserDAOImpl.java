@@ -3,12 +3,10 @@ package com.qingguatang.jdbctest.dao.impl;
 import com.qingguatang.jdbctest.DBManager;
 import com.qingguatang.jdbctest.dao.api.UserDAO;
 import com.qingguatang.jdbctest.dao.model.UserDO;
-import com.qingguatang.jdbctest.dao.model.UserQueryParam;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,9 +135,4 @@ public class UserDAOImpl implements UserDAO {
     return userDOList;
   }
 
-  //TODO: 完成通过不同参数查询用户
-  @Override
-  public List<UserDO> query(UserQueryParam queryParam) {
-    return null;
-  }
 }
