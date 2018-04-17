@@ -3,14 +3,13 @@ package com.qingguatang.jdbctest.dao.impl;
 import com.qingguatang.jdbctest.DBManager;
 import com.qingguatang.jdbctest.dao.api.UserDAO;
 import com.qingguatang.jdbctest.dao.model.UserDO;
-import com.qingguatang.jdbctest.dao.model.UserQueryParam;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * UserDAOImpl的描述:<br> 完成
@@ -139,7 +138,46 @@ public class UserDAOImpl implements UserDAO {
 
   //TODO: 完成通过不同参数查询用户
   @Override
-  public List<UserDO> query(UserQueryParam queryParam) {
-    return null;
+  public List<UserDO> query(Map queryParam) {
+    //select * from user where id = ? and name = ?
+    Connection connection = manager.getConnection();
+    if(queryParam == null || queryParam.isEmpty() || connection == null){
+      return null;
+    }
+    List<UserDO> userDOList = new ArrayList<>();
+    StringBuilder whereSQLBuilder = new StringBuilder("select * from user where ");
+    List paramList = new ArrayList();
+
+    for(Object key : queryParam.keySet()){
+      if(queryParam.get(key) != null){
+        String idStr = (String) key;
+        whereSQLBuilder.append(idStr);
+        whereSQLBuilder.append(" = ? ");
+        whereSQLBuilder.append("and ");
+        paramList.add(queryParam.get(key));
+      }
+    }
+
+    String querySQL = whereSQLBuilder.toString();
+    querySQL = querySQL.substring(0, querySQL.length() - 4);
+    try {
+      PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
+      for (int i = 0; i < paramList.size(); i++) {
+        preparedStatement.setObject(i+1, paramList.get(i));
+      }
+      ResultSet resultSet = preparedStatement.executeQuery();
+      while(resultSet.next()){
+         UserDO userDO = new UserDO();
+         userDO.setId(resultSet.getInt("id"));
+         userDO.setName(resultSet.getString("name"));
+
+         userDOList.add(userDO);
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return userDOList;
   }
 }

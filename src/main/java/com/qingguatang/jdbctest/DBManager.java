@@ -59,4 +59,16 @@ public class DBManager {
       return connection;
     }
 
+    public void closeConnection(Connection connection){
+      if(connection == null){
+        return;
+      }
+
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
 }
