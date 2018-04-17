@@ -4,118 +4,43 @@ import com.qingguatang.jdbctest.DBManager;
 import com.qingguatang.jdbctest.dao.api.UserDAO;
 import com.qingguatang.jdbctest.dao.model.UserDO;
 import com.qingguatang.jdbctest.dao.model.UserQueryParam;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
-import javax.swing.plaf.nimbus.State;
 
 /**
  * UserDAOImpl的描述:<br>
+ *   完成
  *
  * @author apple 2018/4/15 下午4:07
  */
 public class UserDAOImpl implements UserDAO {
 
+  /**
+   * 封装MySql的驱动，不需要每个方法都初始化一次驱动
+   */
   private DBManager manager = DBManager.createInstance();
 
   @Override
   public int add(UserDO userDO) {
-    Connection connection = manager.getConnection();
-    // 如果主键是自增的，则可以不用显示的为其赋值
-    String addSQL = "INSERT INTO user(name) values (?)";
-    Object[] params = new Object[]{userDO.getName()};
-
-    // 将对象的参数，写入sql中
-    PreparedStatement preparedStatement = null;
-    int result = 0;
-    try {
-      preparedStatement = connection.prepareStatement(addSQL);
-      if(params.length > 0){
-        for (int index = 1; index <= params.length; index ++) {
-          preparedStatement.setObject(index, params[index-1]);
-        }
-      }
-      result = preparedStatement.executeUpdate();
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        preparedStatement.close();
-        connection.close();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-
-    return result;
+    return 0;
   }
 
   @Override
   public int update(UserDO userDO) {
-    Connection connection = manager.getConnection();
-    String updateSQL = "UPDATE user SET name = ? WHERE id = ?";
-
-    String userName = userDO.getName();
-    Integer userId = userDO.getId();
-
-    PreparedStatement preparedStatement = null;
-    int result = 0;
-    try {
-      preparedStatement = connection.prepareStatement(updateSQL);
-      preparedStatement.setString(1, userName);
-      preparedStatement.setInt(2, userId);
-
-      result = preparedStatement.executeUpdate();
-    }catch (Exception e){
-      e.printStackTrace();
-    }
-    return result;
+    return 0;
   }
 
+  //TODO: 完成删除逻辑
   @Override
   public int deleteByName(String name) {
-    Connection connection = manager.getConnection();
-    String deleteSQL = "DELETE FROM user where name = ?";
-
-    PreparedStatement preparedStatement = null;
-    int result = 0;
-    try {
-      preparedStatement = connection.prepareStatement(deleteSQL);
-      preparedStatement.setString(1, name);
-
-      result = preparedStatement.executeUpdate();
-    }catch (Exception e){
-      e.printStackTrace();
-    }
-    return result;
+    return 0;
   }
 
   @Override
-  public UserDO selectByName(String name) {
-    Connection connection = manager.getConnection();
-    String selectSQL = "SELECT * FROM user where name = ?";
-
-    PreparedStatement preparedStatement = null;
-    UserDO userDO = new UserDO();
-    try {
-      preparedStatement = connection.prepareStatement(selectSQL);
-      preparedStatement.setString(1, name);
-
-      ResultSet result = preparedStatement.executeQuery();
-
-      while(result.next()){
-        userDO.setId(result.getInt("id"));
-        userDO.setName(result.getString("name"));
-      }
-    }catch (Exception e){
-      e.printStackTrace();
-    }
-    return userDO;
+  public List<UserDO> selectByName(String name) {
+    return null;
   }
 
+  //TODO: 完成通过不同参数查询用户
   @Override
   public List<UserDO> query(UserQueryParam queryParam) {
     return null;

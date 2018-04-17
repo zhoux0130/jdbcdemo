@@ -7,8 +7,14 @@ package com.qingguatang.jdbctest.dao.model;
  */
 public class UserDO {
 
+  /**
+   * 用户的业务主键，唯一id
+   */
   private Integer id;
 
+  /**
+   * 用户的名字
+   */
   private String name;
 
   public Integer getId() {

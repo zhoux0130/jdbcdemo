@@ -1,8 +1,8 @@
 package com.qingguatang.jdbctest;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import com.qingguatang.jdbctest.dao.api.UserDAO;
+import com.qingguatang.jdbctest.dao.impl.UserDAOImpl;
+import com.qingguatang.jdbctest.dao.model.UserDO;
 
 /**
  * Main的描述:<br>
@@ -12,35 +12,28 @@ import java.sql.Statement;
 public class Main {
 
   public static void main(String[] args){
-    try {
-      // 1. 加载一个mysql的驱动，这里封装了对mysql数据库操作的具体实现
-      Class.forName("com.mysql.jdbc.Driver");
+    UserDAO userDAO = new UserDAOImpl();
+    UserDO jackDO = new UserDO();
+    jackDO.setName("Jack");
+    userDAO.add(jackDO);
 
-      // 2. 配置mysql数据库的访问地址，以及用户名及密码
-      String dbURL = "jdbc:mysql://localhost:3306/test";
-      String userName = "root";
-      String password = "";
+    UserDO roseDO = new UserDO();
+    roseDO.setName("Rose");
+    userDAO.add(roseDO);
 
-      // 3. 创建与数据库中的连接通道
-      Connection connection = DriverManager.getConnection(dbURL, userName, password);
+    UserDO tomDO = new UserDO();
+    tomDO.setName("Tom");
+    userDAO.add(tomDO);
 
-      // 4. 使用JDBC的方式创建一个SQL
-      String createUserTableSQL = "CREATE TABLE `user1` (\n"
-          + "  `id` int(11) NOT NULL AUTO_INCREMENT,\n"
-          + "  `name` varchar(45) DEFAULT NULL,\n"
-          + "  PRIMARY KEY (`id`)\n"
-          + ") ";
-      Statement statement = connection.createStatement();
+    // TODO： 将Rose的名字改为Old Rose
 
-      // 5. 执行SQL，并且封装了DB中的返回
-      int result = statement.executeUpdate(createUserTableSQL);
+    // TODO:  将名字叫Tom的用户删除
 
-      // 6. 关闭创建的客户端与DB的连接
-      statement.close();
-      connection.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    // 通过selectByName方法，查找名字叫Jack的用户，并且将用户信息打印到控制台中
+
+    // TODO： 通过query方法，查找名字叫Jack的用户，并且将用户信息打印到控制台中
+
+
 
   }
 

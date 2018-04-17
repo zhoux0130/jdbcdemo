@@ -3,7 +3,7 @@ package com.qingguatang.jdbctest.dao.model;
 /**
  * UserQueryParam的描述:<br>
  *
- * @author joe 2018/4/15 下午4:06
+ * @author apple 2018/4/15 下午4:06
  */
 public class UserQueryParam {
 
