@@ -9,8 +9,7 @@ package com.qingguatang.jdbctest;
  */
 public class Main {
 
-  public static void main(String[] args) throws ClassNotFoundException {
-
+  public static void main(String[] args) {
     try {
       // 1. 加载一个mysql的驱动，这里封装了对mysql数据库操作的具体实现
 
