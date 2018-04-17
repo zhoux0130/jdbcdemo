@@ -4,12 +4,10 @@ import com.qingguatang.jdbctest.DBManager;
 import com.qingguatang.jdbctest.dao.api.UserDAO;
 import com.qingguatang.jdbctest.dao.model.UserDO;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * UserDAOImpl的描述:<br> 完成
@@ -29,33 +27,12 @@ public class UserDAOImpl implements UserDAO {
     if (userDO == null || connection == null) {
       return 0;
     }
-
-    int result = 0;
     String name = userDO.getName();
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(name);
+
     String insertSql = "insert into user(name) values (?)";
-    PreparedStatement preparedStatement = null;
-    try {
-      preparedStatement = connection.prepareStatement(insertSql);
-      preparedStatement.setString(1, name);
-
-      result = preparedStatement.executeUpdate();
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return result;
+    return manager.executeUpdate(connection, insertSql, paramList);
   }
 
   @Override
@@ -65,119 +42,56 @@ public class UserDAOImpl implements UserDAO {
     if (userDO == null || connection == null) {
       return result;
     }
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(userDO.getName());
+    paramList.add(userDO.getId());
+
     String updateSql = "update user set name = ? where id = ?";
-    PreparedStatement preparedStatement = null;
-
-    try {
-      preparedStatement = connection.prepareStatement(updateSql);
-      preparedStatement.setString(1, userDO.getName());
-      preparedStatement.setInt(2, userDO.getId());
-
-      result = preparedStatement.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-      try {
-        manager.getConnection().close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return result;
+    return manager.executeUpdate(connection, updateSql, paramList);
   }
 
-  //TODO: 完成删除逻辑
   @Override
   public int deleteByName(String name) {
-    return 0;
+    Connection connection = manager.getConnection();
+    if (connection == null) {
+      return 0;
+    }
+
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(name);
+    String deleteSql = "delete from user where name = ?";
+    return manager.executeUpdate(connection, deleteSql, paramList);
   }
 
   @Override
   public List<UserDO> selectByName(String name) {
-    List<UserDO> userDOList = new ArrayList<>();
+    Connection connection = manager.getConnection();
+    if (connection == null) {
+      return null;
+    }
 
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(name);
     String querySql = "select * from user where name = ?";
-    PreparedStatement preparedStatement = null;
-    ResultSet resultSet = null;
-    try {
-      preparedStatement = manager.getConnection().prepareStatement(querySql);
-      preparedStatement.setString(1, name);
+    ResultSet resultSet = manager.executeQuery(connection, querySql, paramList);
+    if (resultSet == null) {
+      return null;
+    }
 
-      resultSet = preparedStatement.executeQuery();
+    List<UserDO> userDOList = new ArrayList<>();
+    try {
       while (resultSet.next()) {
         UserDO userDO = new UserDO();
-        userDO.setId(resultSet.getInt("id"));
         userDO.setName(resultSet.getString("name"));
+        userDO.setId(resultSet.getInt("id"));
 
         userDOList.add(userDO);
       }
     } catch (SQLException e) {
       e.printStackTrace();
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-
-      try {
-        manager.getConnection().close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
     }
 
     return userDOList;
   }
 
-  //TODO: 完成通过不同参数查询用户
-  @Override
-  public List<UserDO> query(Map queryParam) {
-    //select * from user where id = ? and name = ?
-    Connection connection = manager.getConnection();
-    if(queryParam == null || queryParam.isEmpty() || connection == null){
-      return null;
-    }
-    List<UserDO> userDOList = new ArrayList<>();
-    StringBuilder whereSQLBuilder = new StringBuilder("select * from user where ");
-    List paramList = new ArrayList();
-
-    for(Object key : queryParam.keySet()){
-      if(queryParam.get(key) != null){
-        String idStr = (String) key;
-        whereSQLBuilder.append(idStr);
-        whereSQLBuilder.append(" = ? ");
-        whereSQLBuilder.append("and ");
-        paramList.add(queryParam.get(key));
-      }
-    }
-
-    String querySQL = whereSQLBuilder.toString();
-    querySQL = querySQL.substring(0, querySQL.length() - 4);
-    try {
-      PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
-      for (int i = 0; i < paramList.size(); i++) {
-        preparedStatement.setObject(i+1, paramList.get(i));
-      }
-      ResultSet resultSet = preparedStatement.executeQuery();
-      while(resultSet.next()){
-         UserDO userDO = new UserDO();
-         userDO.setId(resultSet.getInt("id"));
-         userDO.setName(resultSet.getString("name"));
-
-         userDOList.add(userDO);
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return userDOList;
-  }
 }

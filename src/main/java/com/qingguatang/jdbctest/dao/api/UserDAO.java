@@ -46,6 +46,6 @@ public interface UserDAO {
    * @param queryParam
    * @return
    */
-  List<UserDO> query(Map queryParam);
+//  List<UserDO> query(Map queryParam);
 
 }
