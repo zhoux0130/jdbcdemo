@@ -16,17 +16,17 @@ public class Main {
   public static void main(String[] args) {
     // 将Jack,Rose,Tom等用户写到数据库中
     UserDAO userDAO = new UserDAOImpl();
-//    UserDO jackDO = new UserDO();
-//    jackDO.setName("Jack");
-//    userDAO.add(jackDO);
-//
-//    UserDO roseDO = new UserDO();
-//    roseDO.setName("Rose");
-//    userDAO.add(roseDO);
-//
-//    UserDO tomDO = new UserDO();
-//    tomDO.setName("Tom");
-//    userDAO.add(tomDO);
+    UserDO jackDO = new UserDO();
+    jackDO.setName("Jack");
+    userDAO.add(jackDO);
+
+    UserDO roseDO = new UserDO();
+    roseDO.setName("Rose");
+    userDAO.add(roseDO);
+
+    UserDO tomDO = new UserDO();
+    tomDO.setName("Tom");
+    userDAO.add(tomDO);
 
     //TODO： 将Rose的名字改为Old Rose
 
