@@ -30,7 +30,7 @@ public class DBManager {
       }
       this.driver = properties.getProperty("driver");
       this.dbURL = properties.getProperty("url");
-      this.userName = properties.getProperty("user");
+      this.userName = properties.getProperty("username");
     }
 
     public static DBManager createInstance(){
