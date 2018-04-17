@@ -76,15 +76,15 @@ public class UserDAOImpl implements UserDAO {
   }
 
   @Override
-  public int deleteById(Integer id) {
+  public int deleteByName(String name) {
     Connection connection = manager.getConnection();
-    String deleteSQL = "DELETE FROM user where id = ?";
+    String deleteSQL = "DELETE FROM user where name = ?";
 
     PreparedStatement preparedStatement = null;
     int result = 0;
     try {
       preparedStatement = connection.prepareStatement(deleteSQL);
-      preparedStatement.setInt(1, id);
+      preparedStatement.setString(1, name);
 
       result = preparedStatement.executeUpdate();
     }catch (Exception e){
@@ -94,15 +94,15 @@ public class UserDAOImpl implements UserDAO {
   }
 
   @Override
-  public UserDO selectById(Integer id) {
+  public UserDO selectByName(String name) {
     Connection connection = manager.getConnection();
-    String selectSQL = "SELECT * FROM user where id = ?";
+    String selectSQL = "SELECT * FROM user where name = ?";
 
     PreparedStatement preparedStatement = null;
     UserDO userDO = new UserDO();
     try {
       preparedStatement = connection.prepareStatement(selectSQL);
-      preparedStatement.setInt(1, id);
+      preparedStatement.setString(1, name);
 
       ResultSet result = preparedStatement.executeQuery();
 

@@ -26,6 +26,7 @@ public class DBManager {
       try {
         properties.load(DBManager.class.getClassLoader().getResourceAsStream("db.properties"));
       } catch (Exception e) {
+        e.printStackTrace();
       }
       this.driver = properties.getProperty("driver");
       this.dbURL = properties.getProperty("url");
@@ -44,6 +45,7 @@ public class DBManager {
       try {
         Class.forName(this.driver);
       } catch (Exception e) {
+        e.printStackTrace();
       }
     }
 
@@ -52,6 +54,7 @@ public class DBManager {
       try {
         connection = DriverManager.getConnection(this.dbURL, this.userName, null);
       } catch (SQLException e) {
+        e.printStackTrace();
       }
       return connection;
     }

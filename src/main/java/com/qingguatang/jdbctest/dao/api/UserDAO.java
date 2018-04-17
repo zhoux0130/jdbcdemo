@@ -11,14 +11,39 @@ import java.util.List;
  */
 public interface UserDAO {
 
+  /**
+   * 添加用户对象到DB
+   * @param userDO
+   * @return
+   */
   int add(UserDO userDO);
 
+  /**
+   *
+   * @param userDO
+   * @return
+   */
   int update(UserDO userDO);
 
-  int deleteById(Integer id);
+  /**
+   *
+   * @param name
+   * @return
+   */
+  int deleteByName(String name);
 
-  UserDO selectById(Integer id);
+  /**
+   *
+   * @param name
+   * @return
+   */
+  UserDO selectByName(String  name);
 
+  /**
+   *
+   * @param queryParam
+   * @return
+   */
   List<UserDO> query(UserQueryParam queryParam);
 
 }
