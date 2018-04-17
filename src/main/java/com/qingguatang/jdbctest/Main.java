@@ -1,5 +1,9 @@
 package com.qingguatang.jdbctest;
 
+import com.qingguatang.jdbctest.dao.api.UserDAO;
+import com.qingguatang.jdbctest.dao.impl.UserDAOImpl;
+import com.qingguatang.jdbctest.dao.model.UserDO;
+import java.util.List;
 
 /**
  * Main的描述:<br>
@@ -10,24 +14,31 @@ package com.qingguatang.jdbctest;
 public class Main {
 
   public static void main(String[] args) {
-    try {
-      // 1. 加载一个mysql的驱动，这里封装了对mysql数据库操作的具体实现
+    // 将Jack,Rose,Tom等用户写到数据库中
+    UserDAO userDAO = new UserDAOImpl();
+    UserDO jackDO = new UserDO();
+    jackDO.setName("Jack");
+    userDAO.add(jackDO);
 
-      // 2. 配置mysql数据库的访问地址，以及用户名及密码
+    UserDO roseDO = new UserDO();
+    roseDO.setName("Rose");
+    userDAO.add(roseDO);
 
-      // 3. 创建与数据库中的连接通道
+    UserDO tomDO = new UserDO();
+    tomDO.setName("Tom");
+    userDAO.add(tomDO);
 
-      // 4. 使用JDBC的方式创建一个SQL
+    //TODO： 将Rose的名字改为Old Rose
 
-      // 5. 执行SQL，并且封装了DB中的返回
+    // TODO:  将名字叫Tom的用户删除
 
-      // 6. 关闭创建的客户端与DB的连接
-      
-    } catch (Exception e) {
-      e.printStackTrace();
+    // 通过selectByName方法，查找名字叫Jack的用户，并且将用户信息打印到控制台中
+    String name = "Jack";
+    List<UserDO> userDOList = userDAO.selectByName(name);
+    for (UserDO userDO : userDOList) {
+      System.out.println(userDO.toString());
     }
-
-
+    // TODO： 通过query方法，查找名字叫Jack的用户，并且将用户信息打印到控制台中
 
   }
 
