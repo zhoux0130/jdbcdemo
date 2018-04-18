@@ -83,9 +83,6 @@ public class DBManager {
       resultSet = preparedStatement.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
-    } finally {
-      closeStatement(preparedStatement);
-      closeConnection(connection);
     }
 
     return resultSet;
@@ -121,7 +118,7 @@ public class DBManager {
     }
   }
 
-  private void closeConnection(Connection connection) {
+  public void closeConnection(Connection connection) {
     if (connection != null) {
       try {
         connection.close();

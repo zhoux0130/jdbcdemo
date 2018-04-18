@@ -1,8 +1,8 @@
 package com.qingguatang.jdbctest;
 
-import com.qingguatang.jdbctest.dao.api.UserDAO;
-import com.qingguatang.jdbctest.dao.impl.UserDAOImpl;
-import com.qingguatang.jdbctest.dao.model.UserDO;
+import com.qingguatang.jdbctest.dao.UserDAO;
+import com.qingguatang.jdbctest.impl.UserDAOImpl;
+import com.qingguatang.jdbctest.dataobject.UserDO;
 import java.util.List;
 
 /**
@@ -18,14 +18,17 @@ public class Main {
     UserDAO userDAO = new UserDAOImpl();
     UserDO jackDO = new UserDO();
     jackDO.setName("Jack");
+    jackDO.setGender("male");
     userDAO.add(jackDO);
 
     UserDO roseDO = new UserDO();
     roseDO.setName("Rose");
+    roseDO.setGender("female");
     userDAO.add(roseDO);
 
     UserDO tomDO = new UserDO();
     tomDO.setName("Tom");
+    tomDO.setGender("male");
     userDAO.add(tomDO);
 
     //将Rose的名字改为Old Rose
@@ -44,6 +47,8 @@ public class Main {
       System.out.println(userDO.toString());
     }
 
+    UserDO user = userDAO.selectById(52);
+    System.out.println(user.toString());
   }
 
 }

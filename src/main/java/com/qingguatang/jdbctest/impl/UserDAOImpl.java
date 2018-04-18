@@ -1,9 +1,10 @@
-package com.qingguatang.jdbctest.dao.impl;
+package com.qingguatang.jdbctest.impl;
 
 import com.qingguatang.jdbctest.DBManager;
-import com.qingguatang.jdbctest.dao.api.UserDAO;
-import com.qingguatang.jdbctest.dao.model.UserDO;
+import com.qingguatang.jdbctest.dao.UserDAO;
+import com.qingguatang.jdbctest.dataobject.UserDO;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,10 +29,12 @@ public class UserDAOImpl implements UserDAO {
       return 0;
     }
     String name = userDO.getName();
+    String gender = userDO.getGender();
     List<Object> paramList = new ArrayList<>();
     paramList.add(name);
+    paramList.add(gender);
 
-    String insertSql = "insert into user(name) values (?)";
+    String insertSql = "insert into user(name,gender) values (?,?)";
     return manager.executeUpdate(connection, insertSql, paramList);
   }
 
@@ -78,19 +81,50 @@ public class UserDAOImpl implements UserDAO {
       return null;
     }
 
+    List<UserDO> userDOList = generateResult(resultSet);
+    manager.closeConnection(connection);
+
+    return userDOList;
+  }
+
+  @Override
+  public UserDO selectById(Integer id) {
+    Connection connection = manager.getConnection();
+    if (connection == null) {
+      return null;
+    }
+
+    String querySql = "select * from user where id = ?";
+    UserDO userDO = new UserDO();
+    try {
+      PreparedStatement statement = connection.prepareStatement(querySql);
+      statement.setInt(1, id);
+
+      ResultSet resultSet = statement.executeQuery();
+      if(generateResult(resultSet) != null && generateResult(resultSet).isEmpty()){
+        userDO = generateResult(resultSet).get(0);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      manager.closeConnection(connection);
+    }
+
+    return userDO;
+  }
+
+  private List<UserDO> generateResult(ResultSet resultSet){
     List<UserDO> userDOList = new ArrayList<>();
     try {
-      while (resultSet.next()) {
+      while(resultSet.next()){
         UserDO userDO = new UserDO();
         userDO.setName(resultSet.getString("name"));
         userDO.setId(resultSet.getInt("id"));
-
-        userDOList.add(userDO);
+        userDO.setGender(resultSet.getString("gender"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
     return userDOList;
   }
 

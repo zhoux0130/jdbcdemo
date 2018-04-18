@@ -1,4 +1,4 @@
-package com.qingguatang.jdbctest.dao.model;
+package com.qingguatang.jdbctest.dataobject;
 
 /**
  * UserDO的描述:<br>
@@ -17,6 +17,11 @@ public class UserDO {
    */
   private String name;
 
+  /**
+   * 用户的性别
+   */
+  private String gender;
+
   public Integer getId() {
     return id;
   }
@@ -33,8 +38,16 @@ public class UserDO {
     this.name = name;
   }
 
+  public String getGender() {
+    return gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
+
   @Override
   public String toString(){
-    return "id: " + this.id + ", name: " + this.name;
+    return "id: " + this.id + ", name: " + this.name + ", gender: " + this.gender;
   }
 }
