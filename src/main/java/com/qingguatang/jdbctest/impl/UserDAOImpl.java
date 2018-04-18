@@ -101,8 +101,9 @@ public class UserDAOImpl implements UserDAO {
       statement.setInt(1, id);
 
       ResultSet resultSet = statement.executeQuery();
-      if(generateResult(resultSet) != null && generateResult(resultSet).isEmpty()){
-        userDO = generateResult(resultSet).get(0);
+      List<UserDO> userDOList = generateResult(resultSet);
+      if(userDOList != null && !userDOList.isEmpty()){
+        userDO = userDOList.get(0);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -121,6 +122,7 @@ public class UserDAOImpl implements UserDAO {
         userDO.setName(resultSet.getString("name"));
         userDO.setId(resultSet.getInt("id"));
         userDO.setGender(resultSet.getString("gender"));
+        userDOList.add(userDO);
       }
     } catch (SQLException e) {
       e.printStackTrace();
