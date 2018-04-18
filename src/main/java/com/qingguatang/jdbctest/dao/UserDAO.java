@@ -45,6 +45,8 @@ public interface UserDAO {
    * @return
    */
   UserDO selectById(Integer id);
+
+
   /**
    * 通过参数，查找符合条件的用户
    * @param queryParam

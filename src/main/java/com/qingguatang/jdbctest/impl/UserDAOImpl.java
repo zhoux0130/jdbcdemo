@@ -25,127 +25,109 @@ public class UserDAOImpl implements UserDAO {
   @Override
   public int add(UserDO userDO) {
     Connection connection = manager.getConnection();
-    if (connection == null || userDO == null) {
+    if (userDO == null || connection == null) {
       return 0;
     }
-    String insertSql = "insert into user (name) values (?)";
-    PreparedStatement statement = null;
-    int result = 0;
-    try {
-      statement = connection.prepareStatement(insertSql);
-      statement.setString(1, userDO.getName());
+    String name = userDO.getName();
+    String gender = userDO.getGender();
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(name);
+    paramList.add(gender);
 
-      result = statement.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      if (statement != null) {
-        try {
-          statement.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      }
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return result;
+    String insertSql = "insert into user(name,gender) values (?,?)";
+    return manager.executeUpdate(connection, insertSql, paramList);
   }
 
   @Override
   public int update(UserDO userDO) {
-    // update user set name = 'Old Rose' where id = 29
+    int result = 0;
     Connection connection = manager.getConnection();
-    if (connection == null || userDO == null) {
+    if (userDO == null || connection == null) {
+      return result;
+    }
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(userDO.getName());
+    paramList.add(userDO.getId());
+
+    String updateSql = "update user set name = ? where id = ?";
+    return manager.executeUpdate(connection, updateSql, paramList);
+  }
+
+  @Override
+  public int deleteByName(String name) {
+    Connection connection = manager.getConnection();
+    if (connection == null) {
       return 0;
     }
 
-    String updateSql = "update user set name = ? where id = ?";
-    PreparedStatement preparedStatement = null;
-    int result = 0;
-    try {
-      preparedStatement = connection.prepareStatement(updateSql);
-
-      preparedStatement.setString(1, userDO.getName());
-      preparedStatement.setInt(2, userDO.getId());
-
-      result = preparedStatement.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      if (preparedStatement != null) {
-        try {
-          preparedStatement.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      }
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return result;
-  }
-
-  //TODO: 完成删除逻辑
-  @Override
-  public int deleteByName(String name) {
-
-    return 0;
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(name);
+    String deleteSql = "delete from user where name = ?";
+    return manager.executeUpdate(connection, deleteSql, paramList);
   }
 
   @Override
   public List<UserDO> selectByName(String name) {
     Connection connection = manager.getConnection();
-    if(connection == null){
+    if (connection == null) {
       return null;
     }
+
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(name);
     String querySql = "select * from user where name = ?";
-    List<UserDO> userDOList = new ArrayList<>();
-    PreparedStatement statement = null;
-    try {
-      statement = connection.prepareStatement(querySql);
-      statement.setString(1,name);
-
-      ResultSet resultSet = statement.executeQuery();
-      while (resultSet.next()){
-        UserDO userDO = new UserDO();
-        userDO.setId(resultSet.getInt("id"));
-        userDO.setName(resultSet.getString("name"));
-
-        userDOList.add(userDO);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      if(statement != null){
-        try {
-          statement.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      }
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+    ResultSet resultSet = manager.executeQuery(connection, querySql, paramList);
+    if (resultSet == null) {
+      return null;
     }
+
+    List<UserDO> userDOList = generateResult(resultSet);
+    manager.closeConnection(connection);
 
     return userDOList;
   }
 
-  //TODO: 完成executeQuery方法的练习
   @Override
   public UserDO selectById(Integer id) {
-    return null;
+    Connection connection = manager.getConnection();
+    if (connection == null) {
+      return null;
+    }
+
+    String querySql = "select * from user where id = ?";
+    UserDO userDO = new UserDO();
+    try {
+      PreparedStatement statement = connection.prepareStatement(querySql);
+      statement.setInt(1, id);
+
+      ResultSet resultSet = statement.executeQuery();
+      List<UserDO> userDOList = generateResult(resultSet);
+      if(userDOList != null && !userDOList.isEmpty()){
+        userDO = userDOList.get(0);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      manager.closeConnection(connection);
+    }
+
+    return userDO;
+  }
+
+  private List<UserDO> generateResult(ResultSet resultSet){
+    List<UserDO> userDOList = new ArrayList<>();
+    try {
+      while(resultSet.next()){
+        UserDO userDO = new UserDO();
+        userDO.setName(resultSet.getString("name"));
+        userDO.setId(resultSet.getInt("id"));
+        userDO.setGender(resultSet.getString("gender"));
+        userDOList.add(userDO);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return userDOList;
   }
 
 }
