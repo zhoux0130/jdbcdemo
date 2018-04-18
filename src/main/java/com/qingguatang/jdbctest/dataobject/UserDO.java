@@ -1,4 +1,4 @@
-package com.qingguatang.jdbctest.dao.model;
+package com.qingguatang.jdbctest.dataobject;
 
 /**
  * UserDO的描述:<br>

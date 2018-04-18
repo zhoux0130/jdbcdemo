@@ -1,8 +1,8 @@
 package com.qingguatang.jdbctest;
 
-import com.qingguatang.jdbctest.dao.api.UserDAO;
-import com.qingguatang.jdbctest.dao.impl.UserDAOImpl;
-import com.qingguatang.jdbctest.dao.model.UserDO;
+import com.qingguatang.jdbctest.dao.UserDAO;
+import com.qingguatang.jdbctest.impl.UserDAOImpl;
+import com.qingguatang.jdbctest.dataobject.UserDO;
 import java.util.List;
 
 /**
@@ -34,11 +34,14 @@ public class Main {
     // 通过selectByName方法，查找名字叫Jack的用户，并且将用户信息打印到控制台中
     String name = "Jack";
     List<UserDO> userDOList = userDAO.selectByName(name);
+    if(userDOList == null || userDOList.isEmpty()){
+      return;
+    }
     for (UserDO userDO : userDOList) {
       System.out.println(userDO.toString());
     }
 
-    // TODO： 通过query方法，查找名字叫Jack的用户，并且将用户信息打印到控制台中
+    // TODO： 查询id=1的用户信息
 
   }
 

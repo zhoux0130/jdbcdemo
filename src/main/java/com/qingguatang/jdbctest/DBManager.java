@@ -23,6 +23,7 @@ public class DBManager {
 
     private DBManager(){
       Properties properties = new Properties();
+      //TODO: 将db.properties中的DB配置替换成本机环境
       try {
         properties.load(DBManager.class.getClassLoader().getResourceAsStream("db.properties"));
       } catch (Exception e) {

@@ -1,8 +1,8 @@
-package com.qingguatang.jdbctest.dao.impl;
+package com.qingguatang.jdbctest.impl;
 
 import com.qingguatang.jdbctest.DBManager;
-import com.qingguatang.jdbctest.dao.api.UserDAO;
-import com.qingguatang.jdbctest.dao.model.UserDO;
+import com.qingguatang.jdbctest.dao.UserDAO;
+import com.qingguatang.jdbctest.dataobject.UserDO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -134,5 +134,12 @@ public class UserDAOImpl implements UserDAO {
 
     return userDOList;
   }
+
+  // TODO: 完成select方法练习
+  @Override
+  public UserDO selectById(Integer id) {
+    return null;
+  }
+
 
 }

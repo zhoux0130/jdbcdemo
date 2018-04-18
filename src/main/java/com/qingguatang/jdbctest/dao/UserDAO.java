@@ -1,8 +1,7 @@
-package com.qingguatang.jdbctest.dao.api;
+package com.qingguatang.jdbctest.dao;
 
-import com.qingguatang.jdbctest.dao.model.UserDO;
+import com.qingguatang.jdbctest.dataobject.UserDO;
 import java.util.List;
-import java.util.Map;
 
 /**
  * UserDAO的描述:<br>
@@ -39,6 +38,13 @@ public interface UserDAO {
    * @return 可能存在重名用户，返回List类型
    */
   List<UserDO> selectByName(String  name);
+
+  /**
+   * 通过主键，查询用户
+   * @param id
+   * @return
+   */
+  UserDO selectById(Integer id);
 
   /**
    * 通过参数，查找符合条件的用户
