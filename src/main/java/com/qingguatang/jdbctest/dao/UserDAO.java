@@ -1,9 +1,7 @@
-package com.qingguatang.jdbctest.dao.api;
+package com.qingguatang.jdbctest.dao;
 
-import com.qingguatang.jdbctest.dao.model.UserDO;
-import com.qingguatang.jdbctest.dao.model.UserQueryParam;
+import com.qingguatang.jdbctest.dataobject.UserDO;
 import java.util.List;
-import java.util.Map;
 
 /**
  * UserDAO的描述:<br>
@@ -42,10 +40,16 @@ public interface UserDAO {
   List<UserDO> selectByName(String  name);
 
   /**
+   * 通过用户的主键，查找用户
+   * @param id
+   * @return
+   */
+  UserDO selectById(Integer id);
+  /**
    * 通过参数，查找符合条件的用户
    * @param queryParam
    * @return
    */
-  List<UserDO> query(Map queryParam);
+//  List<UserDO> query(Map queryParam);
 
 }
