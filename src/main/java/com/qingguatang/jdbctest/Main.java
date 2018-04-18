@@ -50,7 +50,7 @@ public class Main {
       System.out.println(userDO.toString());
     }
 
-    // TODO: 使用id进行用户搜索
+    //使用id进行用户搜索
     UserDO user = userDAO.selectById(1);
     System.out.println(user.toString());
   }
