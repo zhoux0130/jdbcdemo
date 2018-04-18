@@ -25,7 +25,7 @@ public class UserDAOImpl implements UserDAO {
   @Override
   public int add(UserDO userDO) {
     Connection connection = manager.getConnection();
-    if(connection == null || userDO == null){
+    if (connection == null || userDO == null) {
       return 0;
     }
     String insertSql = "insert into user (name) values (?)";
@@ -39,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      if(statement != null){
+      if (statement != null) {
         try {
           statement.close();
         } catch (SQLException e) {
@@ -60,8 +60,8 @@ public class UserDAOImpl implements UserDAO {
   public int update(UserDO userDO) {
     // update user set name = 'Old Rose' where id = 29
     Connection connection = manager.getConnection();
-    if(connection == null || userDO == null){
-      return  0;
+    if (connection == null || userDO == null) {
+      return 0;
     }
 
     String updateSql = "update user set name = ? where id = ?";
@@ -77,7 +77,7 @@ public class UserDAOImpl implements UserDAO {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      if(preparedStatement != null){
+      if (preparedStatement != null) {
         try {
           preparedStatement.close();
         } catch (SQLException e) {
@@ -104,35 +104,34 @@ public class UserDAOImpl implements UserDAO {
   @Override
   public List<UserDO> selectByName(String name) {
     Connection connection = manager.getConnection();
-    List<UserDO> userDOList = new ArrayList<>();
-    if(connection == null ){
+    if(connection == null){
       return null;
     }
-
-    String selectSql = "select * from user where name = ?";
+    String querySql = "select * from user where name = ?";
+    List<UserDO> userDOList = new ArrayList<>();
     PreparedStatement statement = null;
     try {
-      statement = connection.prepareStatement(selectSql);
-      statement.setString(1, name);
+      statement = connection.prepareStatement(querySql);
+      statement.setString(1,name);
 
-      ResultSet resultSet = statement.executeQuery(selectSql);
-      while(resultSet.next()){
+      ResultSet resultSet = statement.executeQuery();
+      while (resultSet.next()){
         UserDO userDO = new UserDO();
         userDO.setId(resultSet.getInt("id"));
         userDO.setName(resultSet.getString("name"));
+
         userDOList.add(userDO);
       }
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      if(statement!= null){
+      if(statement != null){
         try {
           statement.close();
         } catch (SQLException e) {
           e.printStackTrace();
         }
       }
-
       try {
         connection.close();
       } catch (SQLException e) {
