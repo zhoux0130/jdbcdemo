@@ -118,6 +118,18 @@ public class DBManager {
     }
   }
 
+  public void closeResultSet(ResultSet resultSet) {
+    if (resultSet == null) {
+      return;
+    }
+
+    try {
+      resultSet.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   public void closeConnection(Connection connection) {
     if (connection == null) {
       return;

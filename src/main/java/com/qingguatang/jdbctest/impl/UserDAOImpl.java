@@ -126,6 +126,8 @@ public class UserDAOImpl implements UserDAO {
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      manager.closeResultSet(resultSet);
     }
     return userDOList;
   }
