@@ -3,6 +3,7 @@ package com.qingguatang.jdbctest;
 import com.qingguatang.jdbctest.dao.UserDAO;
 import com.qingguatang.jdbctest.impl.UserDAOImpl;
 import com.qingguatang.jdbctest.dataobject.UserDO;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,6 +54,18 @@ public class Main {
     //使用id进行用户搜索
     UserDO user = userDAO.selectById(1);
     System.out.println(user.toString());
+
+    int sum = 0;
+    long t1 = (new Date()).getTime();
+    for (int i = 0; i < 1000000; i++) {
+      sum += i;
+    }
+
+    long t2 = (new Date()).getTime();
+    long diff = t2 - t1;
+    String str = "for循环执行时间:" + String.valueOf(diff);
+    System.out.println(str);
+
   }
 
 }

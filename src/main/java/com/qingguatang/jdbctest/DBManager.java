@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -54,7 +55,10 @@ public class DBManager {
   public Connection getConnection() {
     Connection connection = null;
     try {
+      long t1 = (new Date()).getTime();
       connection = DriverManager.getConnection(this.dbURL, this.userName, null);
+      long t2 = (new Date()).getTime();
+      System.out.println(t2-t1);
     } catch (SQLException e) {
       e.printStackTrace();
     }

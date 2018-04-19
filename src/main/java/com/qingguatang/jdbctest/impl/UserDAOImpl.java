@@ -1,6 +1,7 @@
 package com.qingguatang.jdbctest.impl;
 
 import com.qingguatang.jdbctest.DBManager;
+import com.qingguatang.jdbctest.DataSourceManager;
 import com.qingguatang.jdbctest.dao.UserDAO;
 import com.qingguatang.jdbctest.dataobject.UserDO;
 import java.sql.Connection;
@@ -22,9 +23,11 @@ public class UserDAOImpl implements UserDAO {
    */
   private DBManager manager = DBManager.createInstance();
 
+  private DataSourceManager dataSource = DataSourceManager.getInstance();
+
   @Override
   public int add(UserDO userDO) {
-    Connection connection = manager.getConnection();
+    Connection connection = dataSource.getConnection();
     if (userDO == null || connection == null) {
       return 0;
     }
