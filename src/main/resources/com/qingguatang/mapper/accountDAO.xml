@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qingguatang.jdbctest.mapper.AccountMapper">
+  <resultMap id="BaseResultMap" type="com.qingguatang.jdbctest.dataobject.AccountDO">
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="email" jdbcType="VARCHAR" property="email"/>
+    <result column="type" jdbcType="VARCHAR" property="type"/>
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated"/>
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+  </resultMap>
+
+  <select id="getAccount" resultMap="BaseResultMap">
+    select * from account where id = #{id}
+  </select>
+  <insert id="addAccount" parameterType="com.qingguatang.jdbctest.dataobject.AccountDO">
+    insert into account (id, name, email, type, gmt_created, gmt_modified) values (#{id}, #{name},
+    #{email}, #{type}, now(), now())
+  </insert>
+
+  <update id="updateAccount"  parameterType="com.qingguatang.jdbctest.dataobject.AccountDO">
+    UPDATE account SET name = #{name} where id = #{id}
+  </update>
+
+  <select id="getAllAccountList" resultMap="BaseResultMap">
+    select * from account
+  </select>
+</mapper>
