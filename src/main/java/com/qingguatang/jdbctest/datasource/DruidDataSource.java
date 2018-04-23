@@ -36,29 +36,7 @@ public class DruidDataSource implements DataSourceFactory {
 
   @Override
   public DataSource getDataSource() {
-
     return this.dataSource;
-  }
-
-//  public static final DataSource getDataSource() {
-//    if(duirdMysqlSource == null){
-//      duirdMysqlSource = new DruidDataSource();
-//    }
-//
-//    return duirdMysqlSource;
-//  }
-
-  public Connection getConnection() {
-    Connection connection = null;
-    long t1 = (new Date()).getTime();
-    try {
-      connection = dataSource.getConnection();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    long t2 = (new Date()).getTime();
-    System.out.println("druid connection time: " + (t2-t1));
-    return connection;
   }
 
 }
