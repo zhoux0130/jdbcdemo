@@ -112,7 +112,7 @@ public class Main {
 //    }
 
 
-    SqlSession session = MyBatisFactory.getSqlSession();
+    SqlSession session = MyBatisFactory.getSqlSession(null);
     AccountMapper accountMapper = session.getMapper(AccountMapper.class);
     AccountDO accountDO = accountMapper.getAccount("6beac433965d492f90c76301fee8e7df");
 //    System.out.println(accountDO.toString());

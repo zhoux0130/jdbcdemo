@@ -26,4 +26,19 @@
   <select id="getAllAccountList" resultMap="BaseResultMap">
     select * from account
   </select>
+
+  <select id="query" resultMap="BaseResultMap">
+    select * from account
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(id)">
+        and id = #{id}
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(name)">
+        and name = #{name}
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(type)">
+        and type = #{type}
+      </if>
+    </where>
+  </select>
 </mapper>

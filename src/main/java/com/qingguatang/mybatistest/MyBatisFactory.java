@@ -1,5 +1,6 @@
 package com.qingguatang.mybatistest;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.io.IOException;
 import java.io.InputStream;
 import org.apache.ibatis.io.Resources;
@@ -14,7 +15,8 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  */
 public class MyBatisFactory {
 
-  private static SqlSession sqlSession;
+
+  private static SqlSessionFactory sqlSessionFactory;
 
   static {
     String resource = "mybatis-config.xml";
@@ -24,13 +26,18 @@ public class MyBatisFactory {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
-    sqlSession = sqlSessionFactory.openSession(true);
+    sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
   }
 
 
-  public static SqlSession getSqlSession(){
+  public static SqlSession getSqlSession(Boolean notAutoCommit){
+    SqlSession sqlSession = null;
+    if(notAutoCommit == null || Boolean.FALSE.equals(notAutoCommit)){
+      sqlSession = sqlSessionFactory.openSession(true);
+    }else{
+      sqlSession = sqlSessionFactory.openSession();
+    }
+
     return sqlSession;
   }
 

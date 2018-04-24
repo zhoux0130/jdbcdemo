@@ -1,6 +1,7 @@
 package com.qingguatang.jdbctest.mapper;
 
 import com.qingguatang.jdbctest.dataobject.AccountDO;
+import com.qingguatang.jdbctest.param.AccountQueryParam;
 import java.util.List;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.ResultType;
@@ -20,4 +21,6 @@ public interface AccountMapper {
   int updateAccount(AccountDO accountDO);
 
   List<AccountDO> getAllAccountList();
+
+  List<AccountDO> query(AccountQueryParam queryParam);
 }
