@@ -32,8 +32,8 @@ public class AccountMapperTest {
     accountDO.setEmail("king8egg@qq.com");
     accountDO.setType("seller");
     accountDO.setName("king8egg");
-
     int result = accountMapper.addAccount(accountDO);
+
     assertThat(result > 0);
   }
 

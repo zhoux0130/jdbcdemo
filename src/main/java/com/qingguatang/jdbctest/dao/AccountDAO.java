@@ -17,6 +17,11 @@ public interface AccountDAO {
   int add(AccountDO accountDO);
 
   /**
+   * 批量插入用户信息
+   */
+  int addBatch(List<AccountDO> accountDOList);
+
+  /**
    * 修改用户的属性
    */
   int update(AccountDO accountDO);

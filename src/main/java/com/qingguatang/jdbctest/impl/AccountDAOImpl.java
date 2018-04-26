@@ -7,6 +7,7 @@ import com.qingguatang.jdbctest.dataobject.AccountDO;
 import com.qingguatang.jdbctest.util.DBUtil;
 import com.qingguatang.jdbctest.util.UUIDUtil;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ public class AccountDAOImpl implements AccountDAO {
    * 封装MySql的驱动，不需要每个方法都初始化一次驱动
    */
   private DataSourceManager dataSource = DataSourceManager.getInstance();
-//  private DruidDataSource dataSource = DruidDataSource.getDataSource();
 
   private final static String USER_DB = "user";
 
@@ -44,6 +44,15 @@ public class AccountDAOImpl implements AccountDAO {
         accountDO.getType());
 
     return DBUtil.executeUpdate(connection, insertSql, paramList);
+  }
+
+  @Override
+  public int addBatch(List<AccountDO> accountDOList) {
+    Connection connection = dataSource.getConnection(USER_DB);
+    String insertSql = "insert into()";
+//    PreparedStatement preparedStatement = connection.prepareStatement(insertSql);
+
+    return 0;
   }
 
   @Override

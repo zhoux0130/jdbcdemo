@@ -1,6 +1,5 @@
 package com.qingguatang.mybatistest;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.io.IOException;
 import java.io.InputStream;
 import org.apache.ibatis.io.Resources;
