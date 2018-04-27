@@ -64,6 +64,50 @@ public class AccountDAOImpl implements AccountDAO {
   }
 
   @Override
+  public int[] batchAdd(List<AccountDO> accountDOList) {
+    Connection connection = dbManager.getConnection();
+    if (connection == null || accountDOList == null || accountDOList.isEmpty()) {
+      return null;
+    }
+    int[] result = null;
+    PreparedStatement preparedStatement = null;
+    try {
+      connection.setAutoCommit(false);
+      String insertSql = "insert into account (id, name, type, email, gmt_created, gmt_modified) values (?,?,?,?, now(),now())";
+      preparedStatement = connection.prepareStatement(insertSql);
+
+      for (AccountDO accountDO : accountDOList) {
+        preparedStatement.setString(1, accountDO.getId());
+        preparedStatement.setString(2, accountDO.getName());
+        preparedStatement.setString(3, accountDO.getType());
+        preparedStatement.setString(4, accountDO.getEmail());
+
+        preparedStatement.addBatch();
+      }
+
+      result = preparedStatement.executeBatch();
+      connection.commit();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return result;
+  }
+
+  @Override
   public int update(AccountDO accountDO) {
     Connection connection = dbManager.getConnection();
     if (connection == null || accountDO == null) {
@@ -80,6 +124,7 @@ public class AccountDAOImpl implements AccountDAO {
       preparedStatement.setString(4, accountDO.getId());
 
       result = preparedStatement.executeUpdate();
+
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {

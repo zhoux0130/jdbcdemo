@@ -4,8 +4,7 @@ import com.qingguatang.jdbctest.dataobject.AccountDO;
 import java.util.List;
 
 /**
- * AccountDAO的描述:<br>
- *   用户模型的DB操作类
+ * AccountDAO的描述:<br> 用户模型的DB操作类
  *
  * @author apple 2018/4/26 下午6:17
  */
@@ -15,6 +14,11 @@ public interface AccountDAO {
    * 添加用户
    */
   int add(AccountDO accountDO);
+
+  /**
+   * 批量插入用户数据
+   */
+  int[] batchAdd(List<AccountDO> accountDOList);
 
   /**
    * 更新用户，需要传入完整的用户模型
