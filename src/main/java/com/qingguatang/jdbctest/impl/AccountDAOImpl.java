@@ -49,8 +49,21 @@ public class AccountDAOImpl implements AccountDAO {
   @Override
   public int addBatch(List<AccountDO> accountDOList) {
     Connection connection = dataSource.getConnection(USER_DB);
-    String insertSql = "insert into()";
-//    PreparedStatement preparedStatement = connection.prepareStatement(insertSql);
+    String insertSql = "insert into account(id, name, type, email, gmt_created, gmt_modified) values (?,?,?,?,now(),now());";
+    try {
+      connection.setAutoCommit(false);
+      PreparedStatement preparedStatement = connection.prepareStatement(insertSql);
+      for (AccountDO accountDO : accountDOList) {
+        preparedStatement.setString(1, accountDO.getId());
+
+        preparedStatement.addBatch();
+      }
+
+      int[] result = preparedStatement.executeBatch();
+      connection.commit();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     return 0;
   }
