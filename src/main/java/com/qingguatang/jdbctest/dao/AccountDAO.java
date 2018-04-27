@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * AccountDAO的描述:<br>
+ *   用户模型的DB操作类
  *
  * @author apple 2018/4/26 下午6:17
  */
