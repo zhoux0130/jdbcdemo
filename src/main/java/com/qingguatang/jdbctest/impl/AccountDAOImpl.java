@@ -5,6 +5,7 @@ import com.qingguatang.jdbctest.dao.AccountDAO;
 import com.qingguatang.jdbctest.dataobject.AccountDO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -152,7 +153,43 @@ public class AccountDAOImpl implements AccountDAO {
 
   @Override
   public AccountDO getById(String id) {
-    return null;
+    Connection connection = dbManager.getConnection();
+
+    String querySql = "select * from account where id = ?";
+    PreparedStatement preparedStatement = null;
+    AccountDO accountDO = null;
+    try {
+      preparedStatement = connection.prepareStatement(querySql);
+      preparedStatement.setString(1, id);
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+      accountDO = new AccountDO();
+      if (resultSet.next()){
+        accountDO.setGmtCreated(resultSet.getDate("gmt_created"));
+        accountDO.setGmtModified(resultSet.getDate("gmt_modified"));
+        accountDO.setId(resultSet.getString("id"));
+        accountDO.setName(resultSet.getString("name"));
+        accountDO.setType(resultSet.getString("type"));
+        accountDO.setEmail(resultSet.getString("email"));
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      if(preparedStatement != null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return accountDO;
   }
 
   @Override

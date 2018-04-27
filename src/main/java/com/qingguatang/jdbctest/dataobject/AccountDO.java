@@ -87,4 +87,9 @@ public class AccountDO {
   public void setGmtModified(Date gmtModified) {
     this.gmtModified = gmtModified;
   }
+
+  @Override
+  public String toString() {
+    return "id:" + this.id + ", name:" + this.name + ", email:" + this.email;
+  }
 }
