@@ -1,14 +1,19 @@
 package com.qingguatang.jdbctest.impl;
 
+import com.mysql.jdbc.StringUtils;
 import com.qingguatang.jdbctest.DBManager;
 import com.qingguatang.jdbctest.dao.AccountDAO;
 import com.qingguatang.jdbctest.dataobject.AccountDO;
+import com.qingguatang.jdbctest.param.AccountQueryParam;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AccountDAOImpl的描述:<br>
@@ -164,7 +169,7 @@ public class AccountDAOImpl implements AccountDAO {
 
       ResultSet resultSet = preparedStatement.executeQuery();
       accountDO = new AccountDO();
-      if (resultSet.next()){
+      if (resultSet.next()) {
         accountDO.setGmtCreated(resultSet.getDate("gmt_created"));
         accountDO.setGmtModified(resultSet.getDate("gmt_modified"));
         accountDO.setId(resultSet.getString("id"));
@@ -176,7 +181,7 @@ public class AccountDAOImpl implements AccountDAO {
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
-      if(preparedStatement != null){
+      if (preparedStatement != null) {
         try {
           preparedStatement.close();
         } catch (SQLException e) {
@@ -195,5 +200,86 @@ public class AccountDAOImpl implements AccountDAO {
   @Override
   public List<AccountDO> getByName(String name) {
     return null;
+  }
+
+  @Override
+  public List<AccountDO> query(AccountQueryParam queryParam) {
+    //select * from account where id = ? and  name = ? and
+    List<AccountDO> accountDOList = new ArrayList<>();
+    Connection connection = dbManager.getConnection();
+    if(connection == null || queryParam == null){
+      return null;
+    }
+
+    String querySql = "select * from account ";
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(querySql);
+    String id = queryParam.getId();
+    String name = queryParam.getName();
+    String type = queryParam.getType();
+    Map<Integer, String> placeHolderMap = new HashMap<>();
+    if(!StringUtils.isNullOrEmpty(id) || !StringUtils.isNullOrEmpty(name) || !StringUtils.isNullOrEmpty(type) ){
+      stringBuilder.append(" where ");
+      Integer index = 1;
+
+      if(!StringUtils.isNullOrEmpty(id)){
+        stringBuilder.append(" id = ? and");
+        placeHolderMap.put(index, id);
+        index ++;
+      }
+
+      if(!StringUtils.isNullOrEmpty(name)){
+        stringBuilder.append(" name = ? and");
+        placeHolderMap.put(index, name);
+        index ++;
+      }
+
+      if(!StringUtils.isNullOrEmpty(type)){
+        stringBuilder.append(" type = ? and");
+        placeHolderMap.put(index, type);
+      }
+
+      stringBuilder.deleteCharAt(stringBuilder.length() - 4);
+      querySql = stringBuilder.toString();
+    }
+    PreparedStatement preparedStatement = null;
+    try {
+      preparedStatement = connection.prepareStatement(querySql);
+      if(!placeHolderMap.isEmpty()){
+        for(Integer key : placeHolderMap.keySet()){
+          preparedStatement.setString(key, placeHolderMap.get(key));
+        }
+      }
+      ResultSet resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        AccountDO accountDO = new AccountDO();
+        accountDO.setGmtCreated(resultSet.getDate("gmt_created"));
+        accountDO.setGmtModified(resultSet.getDate("gmt_modified"));
+        accountDO.setId(resultSet.getString("id"));
+        accountDO.setName(resultSet.getString("name"));
+        accountDO.setType(resultSet.getString("type"));
+        accountDO.setEmail(resultSet.getString("email"));
+        accountDOList.add(accountDO);
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      if(preparedStatement != null){
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return accountDOList;
+
   }
 }

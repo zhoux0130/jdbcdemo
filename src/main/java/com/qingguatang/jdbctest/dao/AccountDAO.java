@@ -1,6 +1,7 @@
 package com.qingguatang.jdbctest.dao;
 
 import com.qingguatang.jdbctest.dataobject.AccountDO;
+import com.qingguatang.jdbctest.param.AccountQueryParam;
 import java.util.List;
 
 /**
@@ -39,5 +40,7 @@ public interface AccountDAO {
    * 通过用户名称查找用户
    */
   List<AccountDO> getByName(String name);
+
+  List<AccountDO> query(AccountQueryParam queryParam);
 
 }
