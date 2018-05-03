@@ -15,12 +15,11 @@ public class Main {
 
   public static void main(String[] args) {
     AccountDAO accountDAO = new AccountDAOImpl();
-    String id = "4";
-    AccountQueryParam queryParam = new AccountQueryParam();
-    List<AccountDO> accountDOList = accountDAO.query(queryParam);
-    for (AccountDO accountDO : accountDOList) {
-      System.out.println(accountDO.toString());
-    }
+    AccountDO accountDO = new AccountDO();
+    accountDO.setId("4");
+    accountDO.setName("999");
+    accountDO.setType("seller");
+    accountDO.setEmail("999@qq.com");
+    accountDAO.update(accountDO);
   }
-
 }

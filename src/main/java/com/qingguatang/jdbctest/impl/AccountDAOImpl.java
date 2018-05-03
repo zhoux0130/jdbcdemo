@@ -3,6 +3,7 @@ package com.qingguatang.jdbctest.impl;
 
 import com.mysql.jdbc.StringUtils;
 import com.qingguatang.jdbctest.DBManager;
+import com.qingguatang.jdbctest.DBUtil;
 import com.qingguatang.jdbctest.dao.AccountDAO;
 import com.qingguatang.jdbctest.dataobject.AccountDO;
 import com.qingguatang.jdbctest.param.AccountQueryParam;
@@ -121,33 +122,13 @@ public class AccountDAOImpl implements AccountDAO {
       return 0;
     }
     String updateSql = "update account set name = ?, email = ?, type = ?, gmt_modified = now() where id = ?";
-    int result = 0;
-    PreparedStatement preparedStatement = null;
-    try {
-      preparedStatement = connection.prepareStatement(updateSql);
-      preparedStatement.setString(1, accountDO.getName());
-      preparedStatement.setString(3, accountDO.getType());
-      preparedStatement.setString(2, accountDO.getEmail());
-      preparedStatement.setString(4, accountDO.getId());
+    List<Object> paramList = new ArrayList<>();
+    paramList.add(accountDO.getName());
+    paramList.add(accountDO.getEmail());
+    paramList.add(accountDO.getType());
+    paramList.add(accountDO.getId());
 
-      result = preparedStatement.executeUpdate();
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      if (preparedStatement != null) {
-        try {
-          preparedStatement.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      }
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
+    int result = DBUtil.executeUpdate(connection, updateSql, paramList);
 
     return result;
   }
