@@ -1,53 +1,46 @@
 package com.qingguatang.jdbctest.dao;
 
 import com.qingguatang.jdbctest.dataobject.AccountDO;
+import com.qingguatang.jdbctest.param.AccountQueryParam;
 import java.util.List;
 
 /**
- * AccountDAO的描述:<br>
- *   对注册用户信息DB的操作
+ * AccountDAO的描述:<br> 用户模型的DB操作类
  *
- * @author apple 2018/4/15 下午4:05
+ * @author apple 2018/4/26 下午6:17
  */
 public interface AccountDAO {
 
   /**
-   * 新建用户，account对象需要包含主键
+   * 添加用户
    */
   int add(AccountDO accountDO);
 
   /**
-   * 批量插入用户信息
+   * 批量插入用户数据
    */
-  int addBatch(List<AccountDO> accountDOList);
+  int[] batchAdd(List<AccountDO> accountDOList);
 
   /**
-   * 修改用户的属性
+   * 更新用户，需要传入完整的用户模型
    */
   int update(AccountDO accountDO);
 
   /**
-   * 通过主键删除用户
+   * 通过主键，删除用户
    */
   int deleteById(String id);
 
   /**
-   * 通过用户的名字，查找用户
-   * @return 可能存在重名用户，返回List类型
+   * 通过主键查询用户
    */
-  List<AccountDO> selectByName(String name);
+  AccountDO getById(String id);
 
   /**
-   * 通过主键，查找用户
+   * 通过用户名称查找用户
    */
-  AccountDO selectById(String id);
+  List<AccountDO> getByName(String name);
 
-
-  /**
-   * 通过参数，查找符合条件的用户
-   * @param queryParam
-   * @return
-   */
-//  List<UserDO> query(Map queryParam);
+  List<AccountDO> query(AccountQueryParam queryParam);
 
 }

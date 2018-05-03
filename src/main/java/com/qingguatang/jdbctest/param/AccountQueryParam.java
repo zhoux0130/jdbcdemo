@@ -1,23 +1,22 @@
+
 package com.qingguatang.jdbctest.param;
 
 import java.util.List;
 
 /**
  * AccountQueryParam的描述:<br>
- *   定义用户搜索字段模型
  *
- * @author apple 2018/4/24 上午8:05
+ * @author apple 2018/5/3 下午2:11
  */
 public class AccountQueryParam {
 
   private String id;
 
+  private String type;
+
   private String name;
 
   private List<String> idList;
-
-  private String type;
-
 
   public String getId() {
     return id;
@@ -25,6 +24,14 @@ public class AccountQueryParam {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
   public String getName() {
@@ -41,13 +48,5 @@ public class AccountQueryParam {
 
   public void setIdList(List<String> idList) {
     this.idList = idList;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
   }
 }

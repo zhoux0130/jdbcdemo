@@ -1,20 +1,35 @@
+
 package com.qingguatang.jdbctest.dataobject;
 
 import java.util.Date;
-import org.apache.ibatis.type.Alias;
 
 /**
  * AccountDO的描述:<br>
- *   注册用户数据模型
+ *   注册用户DO模型
  *
- * @author apple 2018/4/21 下午4:25
+ * @author apple 2018/4/26 下午6:18
  */
 public class AccountDO {
 
   /**
-   * 用户的id，业务唯一主键
+   * 用户的业务主键，唯一的id
    */
   private String id;
+
+  /**
+   * 用户的名称
+   */
+  private String name;
+
+  /**
+   * 用户的类型，卖家还是买家
+   */
+  private String type;
+
+  /**
+   * 用户注册的email
+   */
+  private String email;
 
   /**
    * 记录被创建的时间
@@ -26,43 +41,12 @@ public class AccountDO {
    */
   private Date gmtModified;
 
-  /**
-   * 用户的真实姓名
-   */
-  private String name;
-
-  /**
-   * 用户的类型，卖家还是买家
-   */
-  private String type;
-
-  /**
-   * 用户的email地址
-   */
-  private String email;
-
   public String getId() {
     return id;
   }
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  public Date getGmtCreated() {
-    return gmtCreated;
-  }
-
-  public void setGmtCreated(Date gmtCreated) {
-    this.gmtCreated = gmtCreated;
-  }
-
-  public Date getGmtModified() {
-    return gmtModified;
-  }
-
-  public void setGmtModified(Date gmtModified) {
-    this.gmtModified = gmtModified;
   }
 
   public String getName() {
@@ -89,8 +73,24 @@ public class AccountDO {
     this.email = email;
   }
 
+  public Date getGmtCreated() {
+    return gmtCreated;
+  }
+
+  public void setGmtCreated(Date gmtCreated) {
+    this.gmtCreated = gmtCreated;
+  }
+
+  public Date getGmtModified() {
+    return gmtModified;
+  }
+
+  public void setGmtModified(Date gmtModified) {
+    this.gmtModified = gmtModified;
+  }
+
   @Override
-  public String toString(){
-    return "id: " + this.id + ", name: " + this.name + ", type: " + this.type;
+  public String toString() {
+    return "id:" + this.id + ", name:" + this.name + ", email:" + this.email;
   }
 }
