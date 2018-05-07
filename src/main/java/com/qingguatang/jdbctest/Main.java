@@ -3,8 +3,6 @@ package com.qingguatang.jdbctest;
 import com.qingguatang.jdbctest.dao.AccountDAO;
 import com.qingguatang.jdbctest.dataobject.AccountDO;
 import com.qingguatang.jdbctest.impl.AccountDAOImpl;
-import com.qingguatang.jdbctest.param.AccountQueryParam;
-import java.util.List;
 
 /**
  * Main的描述:<br> 测试JDBC的连接
@@ -21,5 +19,6 @@ public class Main {
     accountDO.setType("seller");
     accountDO.setEmail("999@qq.com");
     accountDAO.update(accountDO);
+
   }
 }
