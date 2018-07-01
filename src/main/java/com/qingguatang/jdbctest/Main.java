@@ -20,5 +20,22 @@ public class Main {
     accountDO.setEmail("999@qq.com");
     accountDAO.update(accountDO);
 
+    int n = 10;
+    for (int i = 0; i < n; i++) {
+      for(int j = 0; j < n/2; j ++){
+        doSomething(i,j);
+      }
+    }
+
+
+    for (int i = 0; i < n; i++) {
+        doSomething(i);
+    }
+
   }
+
+  public static void doSomething(int i){}
+
+
+  public static void doSomething(int i, int j){}
 }

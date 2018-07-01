@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import com.qingguatang.jdbctest.dao.AccountDAO;
 import com.qingguatang.jdbctest.dataobject.AccountDO;
 import com.qingguatang.jdbctest.impl.AccountDAOImpl;
+import com.qingguatang.jdbctest.param.AccountQueryParam;
 import java.sql.Connection;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -44,6 +46,15 @@ public class AccountDAOTest {
     int result = accountDAO.add(accountDO);
 
     assertTrue(result > 0);
+  }
+
+  @Test
+  public void queryTest(){
+    AccountQueryParam queryParam = new AccountQueryParam();
+    queryParam.setId("1");
+
+    List<AccountDO> accountDOList = accountDAO.query(queryParam);
+    assertTrue(accountDOList.size() > 0);
   }
 
 

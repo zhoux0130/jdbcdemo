@@ -4,6 +4,7 @@ package com.qingguatang.jdbctest.impl;
 import com.mysql.jdbc.StringUtils;
 import com.qingguatang.jdbctest.DBManager;
 import com.qingguatang.jdbctest.DBUtil;
+import com.qingguatang.jdbctest.DataSourceManager;
 import com.qingguatang.jdbctest.dao.AccountDAO;
 import com.qingguatang.jdbctest.dataobject.AccountDO;
 import com.qingguatang.jdbctest.param.AccountQueryParam;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.sql.DataSource;
 
 /**
  * AccountDAOImpl的描述:<br>
@@ -25,6 +27,8 @@ import java.util.Map;
 public class AccountDAOImpl implements AccountDAO {
 
   private DBManager dbManager = DBManager.getInstance();
+
+  private DataSourceManager manager = DataSourceManager.getInstance();
 
   @Override
   public int add(AccountDO accountDO) {
@@ -188,7 +192,7 @@ public class AccountDAOImpl implements AccountDAO {
   public List<AccountDO> query(AccountQueryParam queryParam) {
     //select * from account where id = ? and  name = ? and
     List<AccountDO> accountDOList = new ArrayList<>();
-    Connection connection = dbManager.getConnection();
+    Connection connection = manager.getConnection();
     if (connection == null || queryParam == null) {
       return null;
     }
@@ -222,7 +226,7 @@ public class AccountDAOImpl implements AccountDAO {
         placeHolderMap.put(index, type);
       }
 
-      stringBuilder.deleteCharAt(stringBuilder.length() - 4);
+      stringBuilder.delete(stringBuilder.length() - 4, stringBuilder.length());
       querySql = stringBuilder.toString();
     }
     PreparedStatement preparedStatement = null;
